@@ -1,3 +1,5 @@
+const express = require("express")
+const app = express()
 const brain = require("brain.js")
 const data = require("./data.json")
 
@@ -12,6 +14,18 @@ network.train(trainingData, {
     iterations: 2000
 })
 
-const output = network.run('The code has some bugs')
+app.get("/", (req, res) => {
+    let value = req.query.text
+    let output = "Welcome to simple AI nodejs"
 
-console.log(`Category: ${output}`)
+    if(value)
+        output = network.run(value)
+
+    return res.send({
+        result: output
+    })
+})
+
+app.listen(3000, () => {
+    console.log(`Running on 3000`)
+})
